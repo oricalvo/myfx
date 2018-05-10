@@ -1,6 +1,8 @@
 import {appStore} from "./appStore";
 import {appService} from "./app.service";
 
+import template from "./app.component.html";
+
 export class AppComponent {
     constructor() {
         console.log("AppComponent.ctor");
