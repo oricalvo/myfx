@@ -1,7 +1,7 @@
 import {appStore} from "./appStore";
 import {appService} from "./app.service";
-
 import template from "./app.component.html";
+import styles from "./app.component.css";
 
 export class AppComponent {
     constructor() {
@@ -23,8 +23,8 @@ export class AppComponent {
 
 AppComponent.metadata = {
     name: "app-root",
-    templateUrl: "app.component.html",
-    stylesUrl: "app.component.css",
+    template,
+    styles,
 };
 
 AppComponent.bind = function(binder) {

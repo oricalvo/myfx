@@ -1,5 +1,7 @@
 import {appStore} from "./appStore";
 import {appService} from "./app.service";
+import template from "./contactList.component.html";
+import styles from "./contactList.component.css";
 
 export class ContactListComponent {
     constructor() {
@@ -19,8 +21,8 @@ export class ContactListComponent {
 
 ContactListComponent.metadata = {
     name: "app-contact-list",
-    templateUrl: "contactList.component.html",
-    stylesUrl: "contactList.component.css",
+    template,
+    styles,
 };
 
 ContactListComponent.bind = function(binder) {

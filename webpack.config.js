@@ -6,10 +6,12 @@ module.exports = {
     entry: './main.js',
     output: {
         filename: 'bundle.js',
-        path: path.resolve(__dirname, 'dist')
+        path: path.resolve(__dirname, 'dist'),
+        publicPath: '/',
     },
     devServer: {
         contentBase: path.resolve(__dirname, 'dist'),
+        publicPath: '/',
         compress: true,
         port: 3000,
         open: true,
@@ -20,15 +22,17 @@ module.exports = {
             {
                 test: /\.html$/,
                 use: 'raw-loader'
+            },
+            {
+                test: /\.css$/,
+                use: [ 'style-loader', 'css-loader' ]
             }
         ]
     },
     plugins: [
         new HtmlWebpackPlugin({
             filename: path.resolve(__dirname, 'dist/index.html'),
-            template: path.resolve(__dirname, 'src/index.html'),
-            template: "index.html",
-            inject: true,
+            template: path.resolve(__dirname, 'index.html'),
         })
     ],
 }

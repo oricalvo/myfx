@@ -3,7 +3,7 @@ const componentsMap = {};
 const instances = [];
 
 export function mount(element, component) {
-    element.innerHTML = component.metadata.template.innerHTML;
+    element.innerHTML = component.metadata.compiledTemplate.innerHTML;
 
     const instance = new component();
 
@@ -39,12 +39,12 @@ async function prepareComponent(component) {
 }
 
 function compileComponent(component) {
-    const template = document.createElement(component.metadata.name);
-    template.innerHTML = component.metadata.templateText;
-    const binder = new Binder(template);
+    const compiledTemplate = document.createElement(component.metadata.name);
+    compiledTemplate.innerHTML = component.metadata.template;
+    const binder = new Binder(compiledTemplate);
     component.bind(binder);
     component.metadata.bindings = binder.bindings;
-    component.metadata.template = template;
+    component.metadata.compiledTemplate = compiledTemplate;
 }
 
 async function resolveComponentAsset(component, fieldName) {
@@ -61,13 +61,6 @@ async function resolveComponentAsset(component, fieldName) {
     }
 
     throw new Error("Component has no " + fieldName);
-}
-
-
-async function fixComponent(component, options) {
-    const res = await fetch(options.templateUrl);
-    const text = await res.text();
-    component.template = text;
 }
 
 function linkComponent(element, instance) {

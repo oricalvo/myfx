@@ -1,4 +1,6 @@
 import {update} from "./fx";
+import template from "./clock.component.html";
+import styles from "./clock.component.css";
 
 export class ClockComponent {
     constructor() {
@@ -16,8 +18,8 @@ export class ClockComponent {
 
 ClockComponent.metadata = {
     name: "app-clock",
-    templateUrl: "clock.component.html",
-    stylesUrl: "clock.component.css",
+    template,
+    styles,
 };
 
 ClockComponent.bind = function(binder) {
