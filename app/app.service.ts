@@ -1,6 +1,5 @@
-import {update} from "./fx";
 import {appStore} from "./appStore";
-import * as fx from "./fx";
+import {update} from "../fx/core";
 
 class AppService {
     inc() {
@@ -8,7 +7,7 @@ class AppService {
 
         appStore.counter++;
 
-        fx.update();
+        update();
     }
 
     dec() {

@@ -1,7 +1,6 @@
-import * as fx from "./fx";
+import * as fx from "../fx/core";
 import {AppComponent} from "./app.component";
 import {ContactListComponent} from "./contactList.component";
-import {ClockComponent} from "./clock.component";
 
 init();
 
@@ -10,7 +9,6 @@ async function init() {
         await fx.init([
             AppComponent,
             ContactListComponent,
-            ClockComponent,
         ]);
 
         await fx.mount(document.querySelector("app-root"), AppComponent);

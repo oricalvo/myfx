@@ -1,8 +1,16 @@
-import {update} from "./fx";
+import {update} from "../fx/core";
 import template from "./clock.component.html";
 import styles from "./clock.component.css";
 
 export class ClockComponent {
+    static metadata = {
+        name: "app-clock",
+        template,
+        styles,
+    };
+
+    time: Date;
+
     constructor() {
         console.log("ClockComponent.ctor");
 
@@ -15,12 +23,6 @@ export class ClockComponent {
         }, 1000);
     }
 }
-
-ClockComponent.metadata = {
-    name: "app-clock",
-    template,
-    styles,
-};
 
 ClockComponent.bind = function(binder) {
     binder.text("span.time", "time");
