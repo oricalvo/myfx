@@ -1,15 +1,16 @@
 {
   "dependencies": {
     "@types/node": "^10.0.4",
-    "build-utils": "^1.0.108",
+    "build-utils": "^1.0.115",
     "css-loader": "^0.28.11",
     "extract-text-webpack-plugin": "^3.0.2",
     "html-webpack-plugin": "^3.2.0",
+    "http-server": "^0.11.1",
     "opener": "^1.4.3",
     "raw-loader": "^0.5.1",
     "style-loader": "^0.21.0",
     "ts-loader": "^4.4.1",
-    "typescript": "^2.8.3",
+    "typescript": "^2.9.2",
     "webpack": "^4.8.1",
     "webpack-dev-server": "^3.1.4"
   },

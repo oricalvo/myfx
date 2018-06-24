@@ -1,7 +1,8 @@
 import {ListExpressionMetadata} from "../compiler/list.expression";
-import {getElementByPath} from "../dom.helpers";
+import {getElementByPath, insertBefore} from "../dom.helpers";
 import {EventExpressionMetadata} from "../compiler/event.expression";
 import {getExpressionLinker} from "../core";
+import {ExpressionBinding} from "./linker";
 
 export class ListExpressionLinker {
     constructor() {
@@ -12,17 +13,11 @@ export class ListExpressionLinker {
 
         return new ListExpressionBinding(placeholder, expr, component);
     }
-
-    unlink() {
-    }
-
-    update(instance, context) {
-    }
 }
 
 export class ListExpressionBinding {
     elements: Node[];
-    itemBindings: any[];
+    itemBindings: ExpressionBinding[];
 
     constructor(private placeholder: Element, private expr: ListExpressionMetadata, private component) {
     }
@@ -41,11 +36,12 @@ export class ListExpressionBinding {
         if(collection) {
             for(let i=0; i<collAsArray.length; i++) {
                 const item = collAsArray[i];
-                insertBefore(this.placeholder, this.expr.template);
-                const clone = this.placeholder.previousSibling;
+                const clone = insertBefore(this.placeholder, this.expr.template);
+                this.elements.push(clone);
+                console.log("clone", clone);
                 for(const expr of this.expr.expressions) {
                     const linker = getExpressionLinker(expr.type);
-                    const binding = linker.link(<any>clone, expr, item);
+                    const binding = linker.link(<any>clone, expr, item, item);
                     this.itemBindings.push(binding);
                     binding.update();
                 }
@@ -54,6 +50,14 @@ export class ListExpressionBinding {
     }
 
     clean() {
+        if(this.itemBindings) {
+            for(const binding of this.itemBindings) {
+                binding.unlink();
+            }
+
+            this.itemBindings = [];
+        }
+
         if(this.elements) {
             for (const element of this.elements) {
                 element.parentElement.removeChild(element);
@@ -65,10 +69,4 @@ export class ListExpressionBinding {
 
     unlink() {
     }
-}
-
-function insertBefore(ref, template) {
-    const cont = document.createElement("cont");
-    cont.innerHTML = template;
-    ref.parentElement.insertBefore(cont.childNodes[0], ref);
 }

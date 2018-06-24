@@ -28,7 +28,7 @@ function compileTemplate(template, bindings) {
         compiledExpressions.push(bindingMetadata);
     }
     return {
-        template: compiledTemplate.innerHTML,
+        template: compiledTemplate.outerHTML,
         expressions: compiledExpressions,
     };
 }

@@ -9,10 +9,6 @@ class ListExpressionLinker {
         const placeholder = dom_helpers_1.getElementByPath(host, expr.path);
         return new ListExpressionBinding(placeholder, expr, component);
     }
-    unlink() {
-    }
-    update(instance, context) {
-    }
 }
 exports.ListExpressionLinker = ListExpressionLinker;
 class ListExpressionBinding {
@@ -32,11 +28,12 @@ class ListExpressionBinding {
         if (collection) {
             for (let i = 0; i < collAsArray.length; i++) {
                 const item = collAsArray[i];
-                insertBefore(this.placeholder, this.expr.template);
-                const clone = this.placeholder.previousSibling;
+                const clone = insertBefore(this.placeholder, this.expr.template);
+                this.elements.push(clone);
+                console.log("clone", clone);
                 for (const expr of this.expr.expressions) {
                     const linker = core_1.getExpressionLinker(expr.type);
-                    const binding = linker.link(clone, expr, this.component, item);
+                    const binding = linker.link(clone, expr, item, item);
                     this.itemBindings.push(binding);
                     binding.update();
                 }
@@ -57,7 +54,9 @@ class ListExpressionBinding {
 exports.ListExpressionBinding = ListExpressionBinding;
 function insertBefore(ref, template) {
     const cont = document.createElement("cont");
+    const element = cont.childNodes[0];
     cont.innerHTML = template;
-    ref.parentElement.insertBefore(cont.childNodes[0], ref);
+    ref.parentElement.insertBefore(element, ref);
+    return element;
 }
 //# sourceMappingURL=list.linker.js.map
