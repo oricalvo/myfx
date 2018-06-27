@@ -1,6 +1,6 @@
 import {appStore} from "./appStore";
 import {appService} from "./app.service";
-import {event, text} from "../fx/compiler/expressions";
+import {component, event, text} from "../fx/compiler/expressions";
 import {list} from "../fx/compiler/expressions";
 
 export class ContactListComponent {
@@ -8,17 +8,20 @@ export class ContactListComponent {
         name: "app-contact-list",
         template: `<ul>
             <li>
-                <span class="name"></span>
-                <button class="delete">Delete</button>
-                <button class="change">Change</button>
-                <app-clock></app-clock>
+                <app-contact-item></app-contact-item>
             </li>
         </ul>`,
         bindings: [
             list("li", "contacts", [
-                text("span.name", "name"),
-                event("click", "button.delete", "remove"),
-                event("click", "button.change", "change"),
+                component("app-contact-item", {
+                    properties: [
+                        {source: "contact", target: "contact"}
+                    ],
+                    events: [
+                        {source: "onRemoveContact", target: "remove"},
+                        {source: "onChangeContact", target: "change"},
+                    ]
+                })
             ])
         ],
     };

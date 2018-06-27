@@ -17,8 +17,16 @@ export function ref(selector, field) {
     return new RefExpression(selector, field);
 }
 
-export function component(selector) {
-    return new ComponentExpression(selector);
+export interface ComponentExpressionOptions {
+    properties: any[];
+    events: any[];
+}
+
+export function component(selector, options?: ComponentExpressionOptions) {
+    return new ComponentExpression(
+        selector,
+        options && options.properties,
+        options && options.events);
 }
 
 export function list(selector: string, prop: string, itemTemplateExpressions: TemplateExpression[]) {

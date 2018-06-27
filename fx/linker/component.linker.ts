@@ -22,5 +22,26 @@ export class ComponentExpressionBinding extends ExpressionBinding {
 
         const compType = getComponentTypeByIndex(metadata.componentIndex);
         this.mountedComponent = mount(element, compType);
+
+        if(metadata.events) {
+            for (const event of metadata.events) {
+                const index = compType.metadata.events.indexOf(event.source);
+                if (index == -1) {
+                    throw new Error("Event " + event.source + " does not exist on component of type " + compType.name);
+                }
+            }
+        }
+
+        if(this.metadata.properties) {
+            for (const prop of metadata.properties) {
+                const index = compType.metadata.properties.indexOf(prop.source);
+                if (index == -1) {
+                    throw new Error("Event " + event.source + " does not exist on component of type " + compType.name);
+                }
+            }
+        }
+    }
+
+    update(context: any) {
     }
 }
