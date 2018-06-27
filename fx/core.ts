@@ -4,8 +4,9 @@ import {TextExpressionLinker} from "./linker/text.linker";
 import {ExpressionLinker} from "./linker/linker";
 import {EventExpressionLinker} from "./linker/event.linker";
 import {registerComponentType} from "./registry";
-import {ComponentExpressionLinker} from "./linker/component.binding";
+import {ComponentExpressionLinker} from "./linker/component.linker";
 import {ListExpressionLinker} from "./linker/list.linker";
+import {linkers} from "./linker/linkers";
 
 const instances = [];
 
@@ -32,13 +33,6 @@ export async function init(comps) {
 
     compileAllComponents(comps);
 }
-
-const linkers = {
-    [TemplateExpressionType.Text]: new TextExpressionLinker(),
-    [TemplateExpressionType.Event]: new EventExpressionLinker(),
-    [TemplateExpressionType.Component]: new ComponentExpressionLinker(),
-    [TemplateExpressionType.List]: new ListExpressionLinker(),
-};
 
 export function getExpressionLinker(exprType: TemplateExpressionType): ExpressionLinker {
     const linker = linkers[exprType];

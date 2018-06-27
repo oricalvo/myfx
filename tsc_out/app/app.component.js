@@ -20,15 +20,19 @@ class AppComponent {
 AppComponent.metadata = {
     name: "app-root",
     template: `<h1>Hello</h1>
-            <button class="dec">Dec</button>
-            <span class="counter"></span>
-            <button class="inc">Inc</button>
+            <div>
+                <button class="dec">Dec</button>
+                <span class="counter"></span>
+                <button class="inc">Inc</button>            
+            </div>
+            <app-new-contact></app-new-contact>
             <app-contact-list></app-contact-list>`,
     bindings: [
         expressions_1.text("span.counter", "counter"),
         expressions_1.event("click", "button.inc", "inc"),
         expressions_1.event("click", "button.dec", "dec"),
         expressions_1.component("app-contact-list"),
+        expressions_1.component("app-new-contact"),
     ],
 };
 exports.AppComponent = AppComponent;

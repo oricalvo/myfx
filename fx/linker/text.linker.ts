@@ -22,7 +22,7 @@ export class TextExpressionBinding implements ExpressionBinding {
     }
 
     update() {
-        const value = this.component[this.expr.prop];
+        const value = this.context[this.expr.prop];
         console.log("Updating text expression", this.expr.prop, "for component", this.component, "with value", value);
 
         this.element.innerText = value;

@@ -28,12 +28,12 @@ class ListExpressionBinding {
         if (collection) {
             for (let i = 0; i < collAsArray.length; i++) {
                 const item = collAsArray[i];
-                const clone = insertBefore(this.placeholder, this.expr.template);
+                const clone = dom_helpers_1.insertBefore(this.placeholder, this.expr.template);
                 this.elements.push(clone);
                 console.log("clone", clone);
                 for (const expr of this.expr.expressions) {
                     const linker = core_1.getExpressionLinker(expr.type);
-                    const binding = linker.link(clone, expr, item, item);
+                    const binding = linker.link(clone, expr, this.component, item);
                     this.itemBindings.push(binding);
                     binding.update();
                 }
@@ -41,6 +41,12 @@ class ListExpressionBinding {
         }
     }
     clean() {
+        if (this.itemBindings) {
+            for (const binding of this.itemBindings) {
+                binding.unlink();
+            }
+            this.itemBindings = [];
+        }
         if (this.elements) {
             for (const element of this.elements) {
                 element.parentElement.removeChild(element);
@@ -52,11 +58,4 @@ class ListExpressionBinding {
     }
 }
 exports.ListExpressionBinding = ListExpressionBinding;
-function insertBefore(ref, template) {
-    const cont = document.createElement("cont");
-    const element = cont.childNodes[0];
-    cont.innerHTML = template;
-    ref.parentElement.insertBefore(element, ref);
-    return element;
-}
 //# sourceMappingURL=list.linker.js.map

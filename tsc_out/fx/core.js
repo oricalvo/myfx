@@ -2,11 +2,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 // import {getAllComponents} from "./registry";
 const compiler_1 = require("./compiler/compiler");
-const text_linker_1 = require("./linker/text.linker");
-const event_linker_1 = require("./linker/event.linker");
 const registry_1 = require("./registry");
-const component_binding_1 = require("./linker/component.binding");
-const list_linker_1 = require("./linker/list.linker");
+const linkers_1 = require("./linker/linkers");
 const instances = [];
 function mount(element, component) {
     if (!element) {
@@ -26,14 +23,8 @@ async function init(comps) {
     compiler_1.compileAllComponents(comps);
 }
 exports.init = init;
-const linkers = {
-    [compiler_1.TemplateExpressionType.Text]: new text_linker_1.TextExpressionLinker(),
-    [compiler_1.TemplateExpressionType.Event]: new event_linker_1.EventExpressionLinker(),
-    [compiler_1.TemplateExpressionType.Component]: new component_binding_1.ComponentExpressionLinker(),
-    [compiler_1.TemplateExpressionType.List]: new list_linker_1.ListExpressionLinker(),
-};
 function getExpressionLinker(exprType) {
-    const linker = linkers[exprType];
+    const linker = linkers_1.linkers[exprType];
     if (!linker) {
         throw new Error("No expression linker found of type " + exprType);
     }

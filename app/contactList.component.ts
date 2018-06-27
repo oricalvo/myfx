@@ -15,7 +15,8 @@ export class ContactListComponent {
         </ul>`,
         bindings: [
             list("li", "contacts", [
-                text("span.name", "name")
+                text("span.name", "name"),
+                event("click", "button.delete", "remove"),
             ])
         ],
     };

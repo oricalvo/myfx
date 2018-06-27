@@ -4,6 +4,7 @@ const text_expression_1 = require("./text.expression");
 const event_expression_1 = require("./event.expression");
 const component_expression_1 = require("./component.expression");
 const list_expression_1 = require("./list.expression");
+const ref_expression_1 = require("./ref.expression");
 function text(selector, prop) {
     return new text_expression_1.TextExpression(this.template, selector, prop);
 }
@@ -12,6 +13,10 @@ function event(event, selector, method) {
     return new event_expression_1.EventExpression(event, selector, method);
 }
 exports.event = event;
+function ref(selector, field) {
+    return new ref_expression_1.RefExpression(selector, field);
+}
+exports.ref = ref;
 function component(selector) {
     return new component_expression_1.ComponentExpression(selector);
 }

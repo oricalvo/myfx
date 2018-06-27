@@ -7,15 +7,19 @@ export class AppComponent {
     static metadata = {
         name: "app-root",
         template: `<h1>Hello</h1>
-            <button class="dec">Dec</button>
-            <span class="counter"></span>
-            <button class="inc">Inc</button>
+            <div>
+                <button class="dec">Dec</button>
+                <span class="counter"></span>
+                <button class="inc">Inc</button>            
+            </div>
+            <app-new-contact></app-new-contact>
             <app-contact-list></app-contact-list>`,
         bindings: [
             text("span.counter", "counter"),
             event("click", "button.inc", "inc"),
             event("click", "button.dec", "dec"),
             component("app-contact-list"),
+            component("app-new-contact"),
         ],
     };
 

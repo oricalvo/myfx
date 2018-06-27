@@ -41,7 +41,7 @@ export class ListExpressionBinding {
                 console.log("clone", clone);
                 for(const expr of this.expr.expressions) {
                     const linker = getExpressionLinker(expr.type);
-                    const binding = linker.link(<any>clone, expr, item, item);
+                    const binding = linker.link(<any>clone, expr, this.component, item);
                     this.itemBindings.push(binding);
                     binding.update();
                 }

@@ -6,6 +6,7 @@ var TemplateExpressionType;
     TemplateExpressionType["Event"] = "Event";
     TemplateExpressionType["Component"] = "Component";
     TemplateExpressionType["List"] = "List";
+    TemplateExpressionType["Ref"] = "Ref";
 })(TemplateExpressionType = exports.TemplateExpressionType || (exports.TemplateExpressionType = {}));
 function compileComponent(componentType) {
     const metadata = componentType.metadata;

@@ -8,7 +8,7 @@ export class EventExpressionLinker {
 
         const element = getElementByPath(host, expr.path);
 
-        return new EventExpressionBinding(element, expr, component);
+        return new EventExpressionBinding(element, expr, component, context);
     }
 }
 
@@ -17,10 +17,11 @@ export class EventExpressionBinding implements ExpressionBinding {
 
     constructor(private element: HTMLElement,
                 private expr: EventExpressionMetadata,
-                private component) {
+                private component,
+                private context) {
 
-        this.listener = function() {
-            component[expr.method]();
+        this.listener = (event) => {
+            component[expr.method](event, this.context);
         }
 
         element.addEventListener(expr.event, this.listener);

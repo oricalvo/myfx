@@ -9,6 +9,7 @@ export enum TemplateExpressionType {
     Event = "Event",
     Component = "Component",
     List = "List",
+    Ref = "Ref",
 }
 
 export interface TemplateExpressionMetadata {

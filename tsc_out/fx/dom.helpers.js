@@ -48,4 +48,12 @@ function getElementIndex(parent, element) {
     return -1;
 }
 exports.getElementIndex = getElementIndex;
+function insertBefore(ref, template) {
+    const cont = document.createElement("cont");
+    cont.innerHTML = template;
+    const element = cont.childNodes[0];
+    ref.parentElement.insertBefore(element, ref);
+    return element;
+}
+exports.insertBefore = insertBefore;
 //# sourceMappingURL=dom.helpers.js.map

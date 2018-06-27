@@ -27,7 +27,8 @@ ContactListComponent.metadata = {
         </ul>`,
     bindings: [
         expressions_2.list("li", "contacts", [
-            expressions_1.text("span.name", "name")
+            expressions_1.text("span.name", "name"),
+            expressions_1.event("click", "button.delete", "remove"),
         ])
     ],
 };
