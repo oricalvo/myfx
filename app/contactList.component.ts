@@ -9,7 +9,8 @@ export class ContactListComponent {
         template: `<ul>
             <li>
                 <span class="name"></span>
-                <button class="delete">Delete 3</button>
+                <button class="delete">Delete</button>
+                <button class="change">Change</button>
                 <app-clock></app-clock>
             </li>
         </ul>`,
@@ -17,6 +18,7 @@ export class ContactListComponent {
             list("li", "contacts", [
                 text("span.name", "name"),
                 event("click", "button.delete", "remove"),
+                event("click", "button.change", "change"),
             ])
         ],
     };
@@ -33,6 +35,15 @@ export class ContactListComponent {
         console.log("remove");
 
         appService.removeContact(contact);
+    }
+
+    change(event, contact) {
+        console.log("change");
+
+        appService.updateContact({
+            ...contact,
+            name: "XXX",
+        });
     }
 }
 

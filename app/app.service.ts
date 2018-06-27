@@ -1,5 +1,6 @@
 import {appStore} from "./appStore";
 import {update} from "../fx/core";
+import {Contact} from "./appState";
 
 class AppService {
     inc() {
@@ -25,6 +26,26 @@ class AppService {
 
             update();
         }
+    }
+
+    addContact(name: string) {
+        const contact: Contact = {
+            id: -1,
+            name,
+        };
+
+        appStore.contacts.push(contact);
+
+        update();
+    }
+
+    updateContact(contact: Contact) {
+        const res = appStore.contacts.find(c => c.id == contact.id);
+        if(res) {
+            Object.assign(res, contact);
+        }
+
+        update();
     }
 }
 

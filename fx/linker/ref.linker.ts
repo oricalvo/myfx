@@ -9,21 +9,20 @@ export class RefExpressionLinker {
 
         const element = getElementByPath(host, expr.path);
 
-        return new RefExpressionBinding(element, expr, component);
+        return new RefExpressionBinding(element, expr, component, context);
     }
 }
 
-export class RefExpressionBinding implements ExpressionBinding {
+export class RefExpressionBinding extends ExpressionBinding {
     listener;
 
-    constructor(private element: HTMLElement,
-                private expr: RefExpressionMetadata,
-                private component) {
+    constructor(public element: HTMLElement,
+                public expr: RefExpressionMetadata,
+                component,
+                context) {
+        super(component, context);
 
         component[expr.field] = element;
-    }
-
-    update() {
     }
 
     unlink() {

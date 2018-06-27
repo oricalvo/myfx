@@ -4,7 +4,7 @@ import {ExpressionBinding} from "./linker";
 
 export class TextExpressionLinker {
     link(host: HTMLElement, expr: TextExpressionMetadata, component, context): TextExpressionBinding {
-        console.log("Linking text expression", expr.prop, "to component", component);
+        console.log("Linking text \"" + expr.prop + "\" to context", context);
 
         const element = getElementByPath(host, expr.path);
         return new TextExpressionBinding(element, expr, component, context);
@@ -14,18 +14,26 @@ export class TextExpressionLinker {
     }
 }
 
-export class TextExpressionBinding implements ExpressionBinding {
-    constructor(private element: HTMLElement,
-                private expr: TextExpressionMetadata,
-                private component,
-                private context) {
+export class TextExpressionBinding extends ExpressionBinding {
+    prevValue: any;
+
+    constructor(public element: HTMLElement,
+                public metadata: TextExpressionMetadata,
+                component,
+                context) {
+        super(component, context);
     }
 
-    update() {
-        const value = this.context[this.expr.prop];
-        console.log("Updating text expression", this.expr.prop, "for component", this.component, "with value", value);
+    update(context: any) {
+        const value = context[this.metadata.prop];
+        if(this.prevValue == value) {
+            return;
+        }
+
+        console.log("Updating node text \"" + this.prevValue + "\" with value \"" + value + "\" from context", context);
 
         this.element.innerText = value;
+        this.prevValue = value;
     }
 
     unlink() {

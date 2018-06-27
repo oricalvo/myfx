@@ -1,8 +1,10 @@
 import {ListExpressionMetadata} from "../compiler/list.expression";
 import {getElementByPath, insertBefore} from "../dom.helpers";
-import {EventExpressionMetadata} from "../compiler/event.expression";
 import {getExpressionLinker} from "../core";
 import {ExpressionBinding} from "./linker";
+import {createLogger} from "../logger";
+
+const logger = createLogger("ListExpressionLinker");
 
 export class ListExpressionLinker {
     constructor() {
@@ -11,51 +13,86 @@ export class ListExpressionLinker {
     link(host: Element, expr: ListExpressionMetadata, component, context) {
         const placeholder = getElementByPath(host, expr.path);
 
-        return new ListExpressionBinding(placeholder, expr, component);
+        return new ListExpressionBinding(placeholder, expr, component, context);
     }
 }
 
-export class ListExpressionBinding {
+export class ListExpressionBinding extends ExpressionBinding {
     elements: Node[];
-    itemBindings: ExpressionBinding[];
+    bindings: ExpressionBinding[];
+    items: any[];
 
-    constructor(private placeholder: Element, private expr: ListExpressionMetadata, private component) {
+    constructor(public placeholder: Element, public metadata: ListExpressionMetadata, component, context) {
+        super(component, context);
     }
 
-    update() {
-        this.clean();
+    update(context: any) {
+        super.update(context);
 
-        this.elements = [];
-        this.itemBindings = [];
+        const exprLength = this.metadata.expressions.length;
 
-        const collection = this.component[this.expr.prop];
-        const collAsArray: any[] = Array.from(collection);
-        const placeholderIndex = this.expr.path[this.expr.path.length-1];
-        const placeholderParent = this.placeholder.parentElement;
+        this.items = Array.from(this.context[this.metadata.prop] || []);
+        this.elements = this.elements || [];
+        this.bindings = this.bindings || [];
 
-        if(collection) {
-            for(let i=0; i<collAsArray.length; i++) {
-                const item = collAsArray[i];
-                const clone = insertBefore(this.placeholder, this.expr.template);
-                this.elements.push(clone);
-                console.log("clone", clone);
-                for(const expr of this.expr.expressions) {
-                    const linker = getExpressionLinker(expr.type);
-                    const binding = linker.link(<any>clone, expr, this.component, item);
-                    this.itemBindings.push(binding);
-                    binding.update();
+        //
+        //  Remove old elements
+        //
+        if(this.items.length < this.elements.length) {
+            for (let i = this.items.length; i < this.elements.length; i++) {
+                const element = this.elements[i];
+                element.parentElement.removeChild(element);
+
+                for (let j = i * exprLength; j < (i + 1) * exprLength; j++) {
+                    this.bindings[j].unlink();
                 }
+            }
+
+            this.bindings.splice(this.items.length * exprLength);
+            this.elements.splice(this.items.length);
+        }
+
+        //
+        //  Create new elements
+        //
+        if(this.items.length > this.elements.length) {
+            for (let i = this.elements.length; i < this.items.length; i++) {
+                const item = this.items[i];
+                const element = insertBefore(this.placeholder, this.metadata.template);
+                this.linkElementToItem(element, item);
+            }
+        }
+
+        //
+        //  Updating all bindings
+        //
+        for(let i=0; i<this.items.length; i++) {
+            const item = this.items[i];
+
+            for (let j = i * exprLength; j < (i + 1) * exprLength; j++) {
+                const binding = this.bindings[j];
+                binding.update(item);
             }
         }
     }
 
+    private linkElementToItem(element, item) {
+        this.elements.push(element);
+
+        for(const expr of this.metadata.expressions) {
+            const linker = getExpressionLinker(expr.type);
+            const binding = linker.link(<any>element, expr, this.component, item);
+            this.bindings.push(binding);
+        }
+    }
+
     clean() {
-        if(this.itemBindings) {
-            for(const binding of this.itemBindings) {
+        if(this.bindings) {
+            for(const binding of this.bindings) {
                 binding.unlink();
             }
 
-            this.itemBindings = [];
+            this.bindings = [];
         }
 
         if(this.elements) {
@@ -68,5 +105,6 @@ export class ListExpressionBinding {
     }
 
     unlink() {
+        this.clean();
     }
 }

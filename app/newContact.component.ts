@@ -24,5 +24,7 @@ export class NewContactComponent {
 
     add(event, contact) {
         console.log("add", this.inputName.value);
+
+        appService.addContact(this.inputName.value);
     }
 }
