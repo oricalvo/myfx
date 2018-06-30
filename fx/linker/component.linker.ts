@@ -36,7 +36,7 @@ export class ComponentExpressionBinding extends ExpressionBinding {
             for (const prop of metadata.properties) {
                 const index = compType.metadata.properties.indexOf(prop.source);
                 if (index == -1) {
-                    throw new Error("Event " + event.source + " does not exist on component of type " + compType.name);
+                    throw new Error("Event " + prop.source + " does not exist on component of type " + compType.name);
                 }
             }
         }
