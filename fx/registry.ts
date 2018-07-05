@@ -1,36 +1,60 @@
-const components = [];
-const nameToIndex = {};
-const nameToClass = {};
+export class TypeRegistry {
+    private types = [];
+    private nameToIndex = {};
+    private nameToClass = {};
 
-export function registerComponentType(name, comp) {
-    components.push(comp);
-    nameToClass[name] = comp;
-    nameToIndex[name] = components.length - 1;
-}
-
-export function getComponentTypeByName(name) {
-    const comp = nameToClass[name];
-    if(!comp) {
-        throw new Error("Component with name " + name + " was not found");
+    constructor() {
     }
 
-    return comp;
-}
+    register(type) {
+        const {metadata} = type;
+        if(!metadata) {
+            throw new Error("Type " + type.name + " has no metadata");
+        }
 
-export function getComponentTypeByIndex(index: number) {
-    const compType = components[index];
-    if(!compType) {
-        throw new Error("Component type for index " + index + " was not found");
+        const {name} = metadata;
+        if(!name) {
+            throw new Error("metadata is missing a name");
+        }
+
+        this.types.push(type);
+        this.nameToClass[name] = type;
+        this.nameToIndex[name] = this.types.length - 1;
     }
 
-    return compType;
-}
+    getTypeByName(name: string) {
+        const comp = this.nameToClass[name];
+        if(!comp) {
+            throw new Error("Component with name " + name + " was not found");
+        }
 
-export function getComponentTypeIndex(name): number {
-    const index = nameToIndex[name];
-    if(index === undefined) {
-        throw new Error("Component with name " + name + " was not found");
+        return comp;
     }
 
-    return index;
+    getTypeByIndex(index: number) {
+        const type = this.types[index];
+        if(!type) {
+            throw new Error("Type for index " + index + " was not found");
+        }
+
+        return type;
+    }
+
+    getIndexByName(name: string): number {
+        const index = this.nameToIndex[name];
+        if(index === undefined) {
+            throw new Error("Type with name " + name + " was not found");
+        }
+
+        return index;
+    }
+
+    getAll() {
+        return this.types;
+    }
 }
+
+export const registry = {
+    components: new TypeRegistry(),
+    formatters: new TypeRegistry(),
+};

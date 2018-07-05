@@ -5,8 +5,8 @@ import {ListExpression} from "./list.expression";
 import {TemplateExpression} from "./compiler";
 import {RefExpression} from "./ref.expression";
 
-export function text(selector, prop) {
-    return new TextExpression(this.template, selector, prop);
+export function text(selector: string, prop: string, formatter?: string, formatterArgs?: any) {
+    return new TextExpression(this.template, selector, prop, formatter, formatterArgs);
 }
 
 export function event(event, selector, method) {
@@ -32,3 +32,10 @@ export function component(selector, options?: ComponentExpressionOptions) {
 export function list(selector: string, prop: string, itemTemplateExpressions: TemplateExpression[]) {
     return new ListExpression(selector, prop, itemTemplateExpressions);
 }
+//
+// export type Expression =
+//     ListExpression|
+//     RefExpression|
+//     ComponentExpression|
+//     TextExpression|
+//     EventExpression;

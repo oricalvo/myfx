@@ -2,9 +2,11 @@ import {appStore} from "./appStore";
 import {appService} from "./app.service";
 import {component, event, text} from "../fx/compiler/expressions";
 import {list} from "../fx/compiler/expressions";
+import {ComponentMetadata} from "../fx/compiler/compiler";
 
 export class ContactListComponent {
-    static metadata = {
+    static metadata: ComponentMetadata = {
+        type: "component",
         name: "app-contact-list",
         template: `<ul>
             <li>

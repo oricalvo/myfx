@@ -1,4 +1,4 @@
-import {registerComponentType} from "../registry";
+import {registry} from "../registry";
 
 export interface TemplateExpression {
     compile(template: HTMLElement): TemplateExpressionMetadata;
@@ -17,12 +17,14 @@ export interface TemplateExpressionMetadata {
 }
 
 export interface ComponentMetadata {
+    type: "component";
     name: string;
     template: string;
-    compiledTemplate: HTMLElement;
-    styles: string;
-    bindings: TemplateExpression[];
-    compiledBindings: TemplateExpressionMetadata[];
+    bindings?: TemplateExpression[];
+    properties?: string[];
+    events?: string[];
+    compiledTemplate?: HTMLElement;
+    compiledBindings?: TemplateExpressionMetadata[];
 }
 
 export interface ComponentType {
@@ -64,8 +66,14 @@ export function compileTemplate(template: string, bindings: TemplateExpression[]
     };
 }
 
-export function compileAllComponents(components) {
+export function compileAllComponents() {
+    const components = registry.components.getAll();
     for(const component of components) {
         compileComponent(component);
     }
+}
+
+export interface FormatterMetadata {
+    type: "formatter";
+    name: string;
 }

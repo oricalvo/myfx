@@ -1,7 +1,9 @@
 import {event, text} from "../fx/compiler/expressions";
+import {ComponentMetadata} from "../fx/compiler/compiler";
 
 export class ContactItemComponent {
-    static metadata = {
+    static metadata: ComponentMetadata = {
+        type: "component",
         name: "app-contact-item",
         template: `<span class="name"></span>
                 <button class="delete">Delete</button>

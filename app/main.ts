@@ -3,6 +3,8 @@ import {AppComponent} from "./app.component";
 import {ContactListComponent} from "./contactList.component";
 import {NewContactComponent} from "./newContact.component";
 import {ContactItemComponent} from "./contactItem.component";
+import {ClockComponent} from "./clock.component";
+import {timeFormatter} from "./time.formatter";
 
 init();
 
@@ -13,6 +15,8 @@ async function init() {
             ContactListComponent,
             NewContactComponent,
             ContactItemComponent,
+            ClockComponent,
+            timeFormatter,
         ]);
 
         await fx.mount(document.querySelector("app-root"), AppComponent);

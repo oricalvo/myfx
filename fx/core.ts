@@ -1,12 +1,7 @@
-// import {getAllComponents} from "./registry";
 import {compileAllComponents, TemplateExpressionMetadata, TemplateExpressionType} from "./compiler/compiler";
-import {TextExpressionLinker} from "./linker/text.linker";
 import {ExpressionLinker} from "./linker/linker";
-import {EventExpressionLinker} from "./linker/event.linker";
-import {registerComponentType} from "./registry";
-import {ComponentExpressionLinker} from "./linker/component.linker";
-import {ListExpressionLinker} from "./linker/list.linker";
 import {linkers} from "./linker/linkers";
+import {registry} from "./registry";
 
 const instances = [];
 
@@ -26,12 +21,25 @@ export function mount(element, component) {
     instances.push(instance);
 }
 
-export async function init(comps) {
-    for(const comp of comps) {
-        registerComponentType(comp.metadata.name, comp);
+export async function init(types) {
+    for(const type of types) {
+        const {metadata} = type;
+        if(!metadata) {
+            throw new Error("No metadata found for type " + type.name);
+        }
+
+        if(metadata.type == "component") {
+            registry.components.register(type);
+        }
+        else if(metadata.type == "formatter") {
+            registry.formatters.register(type);
+        }
+        else {
+            throw new Error("Unknown metadata type: " + metadata.type);
+        }
     }
 
-    compileAllComponents(comps);
+    compileAllComponents();
 }
 
 export function getExpressionLinker(exprType: TemplateExpressionType): ExpressionLinker {

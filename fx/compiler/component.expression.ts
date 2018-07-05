@@ -1,6 +1,6 @@
 import {getElementBySelector, getElementPath} from "../dom.helpers";
-import {getComponentTypeIndex} from "../registry";
 import {TemplateExpressionMetadata, TemplateExpressionType} from "./compiler";
+import {registry} from "../registry";
 
 export class ComponentExpression {
     constructor(public selector: string, public properties, public events) {
@@ -9,7 +9,7 @@ export class ComponentExpression {
     compile(template: HTMLElement): ComponentExpressionMetadata {
         const element = getElementBySelector(template, this.selector);
         const path = getElementPath(template, element);
-        const index = getComponentTypeIndex(element.localName);
+        const index = registry.components.getIndexByName(element.localName);
 
         return {
             type: TemplateExpressionType.Component,

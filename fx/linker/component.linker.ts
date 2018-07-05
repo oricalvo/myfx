@@ -1,8 +1,8 @@
 import {ComponentExpressionMetadata} from "../compiler/component.expression";
 import {getElementByPath} from "../dom.helpers";
 import {mount} from "../core";
-import {getComponentTypeByIndex, getComponentTypeByName, getComponentTypeIndex} from "../registry";
 import {ExpressionBinding} from "./linker";
+import {registry} from "../registry";
 
 export class ComponentExpressionLinker {
     constructor() {
@@ -20,7 +20,7 @@ export class ComponentExpressionBinding extends ExpressionBinding {
     constructor(public element, public metadata: ComponentExpressionMetadata, component, context) {
         super(component, context);
 
-        const compType = getComponentTypeByIndex(metadata.componentIndex);
+        const compType = registry.components.getTypeByIndex(metadata.componentIndex);
         this.mountedComponent = mount(element, compType);
 
         if(metadata.events) {

@@ -1,19 +1,22 @@
 import {update} from "../fx/core";
-import template from "./clock.component.html";
-import styles from "./clock.component.css";
+import {text} from "../fx/compiler/expressions";
+import {ComponentMetadata} from "../fx/compiler/compiler";
 
 export class ClockComponent {
-    static metadata = {
+    static metadata: ComponentMetadata = {
+        type: "component",
         name: "app-clock",
-        template,
-        styles,
+        template: `
+            <span></span>
+        `,
+        bindings: [
+            text("span", "time", "time"),
+        ]
     };
 
     time: Date;
 
     constructor() {
-        console.log("ClockComponent.ctor");
-
         this.time = new Date();
 
         setInterval(()=> {
@@ -22,8 +25,4 @@ export class ClockComponent {
             update(this);
         }, 1000);
     }
-}
-
-ClockComponent.bind = function(binder) {
-    binder.text("span.time", "time");
 }
