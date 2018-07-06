@@ -16,7 +16,7 @@ export class AppComponent {
             </div>
             <app-new-contact></app-new-contact>
             <app-contact-list></app-contact-list>
-            <app-clock></app-clock>
+            <app-clock></app-clock><button class="seconds">Toggle Seconds</button>
         `,
         bindings: [
             text("span.counter", "counter"),
@@ -24,7 +24,12 @@ export class AppComponent {
             event("click", "button.dec", "dec"),
             component("app-contact-list"),
             component("app-new-contact"),
-            component("app-clock"),
+            component("app-clock", {
+                properties: [
+                    {source: "showSeconds", target: "showSeconds"}
+                ]
+            }),
+            event("click", "button.seconds", "toggleSeconds")
         ],
     };
 
@@ -42,5 +47,9 @@ export class AppComponent {
 
     inc() {
         appService.inc();
+    }
+
+    toggleSeconds() {
+        console.log("xxx");
     }
 }

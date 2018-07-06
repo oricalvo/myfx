@@ -18,8 +18,8 @@ export function ref(selector, field) {
 }
 
 export interface ComponentExpressionOptions {
-    properties: any[];
-    events: any[];
+    properties?: any[];
+    events?: any[];
 }
 
 export function component(selector, options?: ComponentExpressionOptions) {

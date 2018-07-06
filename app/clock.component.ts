@@ -11,10 +11,14 @@ export class ClockComponent {
         `,
         bindings: [
             text("span", "time", "time"),
+        ],
+        properties: [
+            "showSeconds"
         ]
     };
 
     time: Date;
+    showSeconds: boolean;
 
     constructor() {
         this.time = new Date();

@@ -3,6 +3,8 @@ import {update} from "../fx/core";
 import {Contact} from "./appState";
 
 class AppService {
+    nextId: number = -1;
+
     inc() {
         console.log("inc");
 
@@ -30,7 +32,7 @@ class AppService {
 
     addContact(name: string) {
         const contact: Contact = {
-            id: -1,
+            id: this.nextId--,
             name,
         };
 

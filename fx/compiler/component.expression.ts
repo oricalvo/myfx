@@ -15,8 +15,8 @@ export class ComponentExpression {
             type: TemplateExpressionType.Component,
             componentIndex: index,
             path,
-            properties: this.properties,
-            events: this.events,
+            properties: this.properties || [],
+            events: this.events || [],
         };
     }
 }

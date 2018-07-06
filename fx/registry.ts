@@ -17,6 +17,9 @@ export class TypeRegistry {
             throw new Error("metadata is missing a name");
         }
 
+        metadata.events = metadata.events || [];
+        metadata.properties = metadata.properties || [];
+
         this.types.push(type);
         this.nameToClass[name] = type;
         this.nameToIndex[name] = this.types.length - 1;

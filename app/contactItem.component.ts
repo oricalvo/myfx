@@ -1,5 +1,7 @@
 import {event, text} from "../fx/compiler/expressions";
 import {ComponentMetadata} from "../fx/compiler/compiler";
+import {EventEmitter} from "../fx/eventEmitter";
+import {Contact} from "./appState";
 
 export class ContactItemComponent {
     static metadata: ComponentMetadata = {
@@ -10,9 +12,9 @@ export class ContactItemComponent {
                 <button class="change">Change</button>
                 <app-clock></app-clock>`,
         bindings: [
-            text("span.name", "name"),
-            event("click", "button.delete", "onRemoveContact"),
-            event("click", "button.change", "onChangeContact"),
+            text("span.name", "contact.name"),
+            event("click", "button.delete", "onButtonRemoveClicked"),
+            event("click", "button.change", "onButtonChangeClicked"),
         ],
         properties: [
             "contact",
@@ -23,7 +25,19 @@ export class ContactItemComponent {
         ]
     };
 
+    contact: Contact;
+    onRemoveContact: EventEmitter;
+    onChangeContact: EventEmitter;
+
     constructor() {
         console.log("ContactItemComponent.ctor");
+    }
+
+    onButtonRemoveClicked() {
+        this.onRemoveContact.emit(this.contact);
+    }
+
+    onButtonChangeClicked() {
+        this.onChangeContact.emit(this.contact);
     }
 }

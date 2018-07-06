@@ -19,7 +19,7 @@ export class TextExpression {
         return {
             type: TemplateExpressionType.Text,
             path,
-            prop: this.prop,
+            expr: this.prop,
             formatterIndex,
             formatterArgs: this.formatterArgs,
         };
@@ -28,8 +28,9 @@ export class TextExpression {
 
 export interface TextExpressionMetadata extends TemplateExpressionMetadata {
     path: number[];
-    prop: string;
+    expr: string;
     formatterIndex: number;
     formatterArgs: any;
     formatter?: any;
+    exprFn?: (component) => any;
 }

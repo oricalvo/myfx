@@ -17,7 +17,7 @@ export class ContactListComponent {
             list("li", "contacts", [
                 component("app-contact-item", {
                     properties: [
-                        {source: "contact", target: "contact"}
+                        {target: "contact"}
                     ],
                     events: [
                         {source: "onRemoveContact", target: "remove"},
@@ -36,13 +36,13 @@ export class ContactListComponent {
         return appStore.contacts;
     }
 
-    remove(event, contact) {
+    remove(contact) {
         console.log("remove");
 
         appService.removeContact(contact);
     }
 
-    change(event, contact) {
+    change(contact) {
         console.log("change");
 
         appService.updateContact({

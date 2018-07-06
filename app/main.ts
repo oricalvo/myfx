@@ -20,6 +20,8 @@ async function init() {
         ]);
 
         await fx.mount(document.querySelector("app-root"), AppComponent);
+
+        fx.update();
     }
     catch (err) {
         console.error(err);

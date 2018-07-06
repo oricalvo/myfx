@@ -2,10 +2,11 @@ import {compileAllComponents, TemplateExpressionMetadata, TemplateExpressionType
 import {ExpressionLinker} from "./linker/linker";
 import {linkers} from "./linker/linkers";
 import {registry} from "./registry";
+import {EventEmitter} from "./eventEmitter";
 
 const instances = [];
 
-export function mount(element, component) {
+export function mount(element, component): object {
     if(!element) {
         throw new Error("element parameter must be non empty");
     }
@@ -16,9 +17,11 @@ export function mount(element, component) {
 
     linkComponent(element, instance);
 
-    updateComponent(instance);
+    // updateComponent(instance);
 
     instances.push(instance);
+
+    return instance;
 }
 
 export async function init(types) {
@@ -52,12 +55,19 @@ export function getExpressionLinker(exprType: TemplateExpressionType): Expressio
 }
 
 function linkComponent(element, component) {
-    console.log("linkComponent", element, component);
+    const {metadata} = component.constructor;
+
+    console.log("linkComponent", element, component, metadata);
+
+    for(const event of metadata.events) {
+        component[event] = new EventEmitter();
+    }
 
     component.bindings = [];
     component.element = element;
 
-    const expressions: TemplateExpressionMetadata[] = component.constructor.metadata.compiledBindings;
+
+    const expressions: TemplateExpressionMetadata[] = metadata.compiledBindings;
     for(const expr of expressions) {
         const linker = getExpressionLinker(expr.type);
         const binding = linker.link(element, expr, component, component);
